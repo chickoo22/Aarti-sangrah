@@ -38,6 +38,7 @@ fun HomeScreen(
     val aartis by viewModel.allAartis.collectAsState()
     val currentLang by viewModel.currentLanguage.collectAsState()
     val selectedDeity by viewModel.selectedDeity.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
 
     // Navigation Step within Home:
     // "LANG" -> Select Language first
@@ -348,7 +349,14 @@ fun HomeScreen(
 
                 // ==================== STEP 3: AARTI LIST FOR SELECTED DEITY ====================
                 "AARTI" -> {
-                    val deityAartis = aartis.filter { it.deity.equals(selectedDeity, ignoreCase = true) }
+                    val deityAartis = aartis.filter { 
+                        it.deity.equals(selectedDeity, ignoreCase = true) &&
+                        (searchQuery.isBlank() || 
+                         it.titleEnglish.contains(searchQuery, ignoreCase = true) ||
+                         it.titleHindi.contains(searchQuery) ||
+                         it.titleMarathi.contains(searchQuery) ||
+                         it.lyricsHindi.contains(searchQuery))
+                    }
 
                     Column(
                         modifier = Modifier
@@ -383,6 +391,34 @@ fun HomeScreen(
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
+
+                        // Search bar to filter prayers
+                        OutlinedTextField(
+                            value = searchQuery,
+                            onValueChange = { viewModel.setSearchQuery(it) },
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = {
+                                Text(
+                                    when(currentLang) {
+                                        "hi" -> "आरती या प्रार्थना खोजें..."
+                                        "mr" -> "आरती किंवा प्रार्थना शोधा..."
+                                        else -> "Search aarti or prayer..."
+                                    }
+                                )
+                            },
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            trailingIcon = {
+                                if (searchQuery.isNotEmpty()) {
+                                    IconButton(onClick = { viewModel.setSearchQuery("") }) {
+                                        Icon(Icons.Default.Clear, contentDescription = "Clear")
+                                    }
+                                }
+                            },
+                            shape = RoundedCornerShape(24.dp),
+                            singleLine = true
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
 
                         LazyColumn(
                             modifier = Modifier

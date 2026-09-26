@@ -379,6 +379,76 @@ object AartiSeedData {
                 category = "Hanuman"
             ),
 
+            // --- 13. HANUMAN: Hanuman Chalisa ---
+            AartiEntity(
+                deity = "Hanuman",
+                titleEnglish = "Shri Hanuman Chalisa",
+                titleHindi = "श्री हनुमान चालीसा",
+                titleMarathi = "श्री हनुमान चालिसा",
+                lyricsEnglish = "Doha:\n" +
+                        "Shri Guru Charan Saroj Raj Nij Man Mukur Sudhari,\n" +
+                        "Barnau Raghubar Bimal Jasu Jo Dayaku Phal Chari.\n" +
+                        "Buddhiheen Tanu Janike Sumirau Pavan Kumar,\n" +
+                        "Bal Buddhi Vidya Dehu Mohi Harhu Kalesh Vikar.\n\n" +
+                        "Chaupai:\n" +
+                        "Jai Hanuman Gyaan Gun Sagar, Jai Kapis Tihun Lok Ujagar.\n" +
+                        "Ram Doot Atulit Bal Dhama, Anjani Putra Pavan Sut Nama.\n" +
+                        "Mahavir Vikram Bajrangi, Kumati निवार सुमती Ke Sangi.\n" +
+                        "Kanchan Baran Viraj Subesa, Kundal Kundal Kanth Bhusha.\n" +
+                        "Hath Vajra Aur Flag Viraje, Kandhe Muj Munja Janeu Saje.\n" +
+                        "Sankar Suvan Kesari Nandan, Tej Pratap Mahajag Vandan.\n" +
+                        "Vidyavan Guni Ati Chatur, Ram Kaj Karibe Ko Aatur.\n" +
+                        "Prabhu Charitra Sunibe Ko Rasiya, Ram Lakhan Sita Man Basiya.\n" +
+                        "Sookshma Roop Dhari Siyahi Dikhava, Vikkat Roop Dhari Lanka Jarava.\n" +
+                        "Bhim Roop Dhari Asur Samhare, Ramchandra Ke Kaj Saware.\n" +
+                        "Laye Sanjivan Lakhan Jiyaye, Shri Raghuvir Harashi Ur Laye.\n" +
+                        "Raghupati Kinhi Bahut Badaai, Tum Mama Priya Bharatahi Sam Bhai.\n" +
+                        "Sahas Badan Tumharo Jas Gavai, Us Kahi Shri Pati Kanth Lagavai.\n" +
+                        "Sankat Se Hanuman Chhudavai, Man Kram Bachan Dhyan Jo Lavai.\n" +
+                        "Sab Par Ram Tapas Raja, Tin Ke Kaj Sakal Tum Saja.\n" +
+                        "Aur Manorath Jo Koi Lavai, Soi Amrit Jivan Phal Pavai.\n\n" +
+                        "Doha:\n" +
+                        "Pavan Tanay Sankat Haran Mangal Murati Roop,\n" +
+                        "Ram Lakhan Sita Sahit Hriday Basahu Sur Bhoot.",
+                lyricsHindi = "दोहा:\n" +
+                        "श्री गुरु चरण सरोज रज निज मन मुकुर सुधारि।\n" +
+                        "बरनउँ रघुबर बिमल सुसु जो दायक फल चारि॥\n" +
+                        "बुद्धिहीन तनु जानिके सुमिरौं पवन कुमार।\n" +
+                        "बल बुद्धि विद्या देहु मोहि हरहु कलेश विकार॥\n\n" +
+                        "चौपाई:\n" +
+                        "जय हनुमान ज्ञान गुन सागर। जय कपिस तिहुँ लोक उजागर॥\n" +
+                        "राम दूत अतुलित बल धामा। अंजनी पुत्र पवनसुत नामा॥\n" +
+                        "महावीर विक्रम बजरंगी। कुमति निवार सुमति के संगी॥\n" +
+                        "कंचन बरन बिराज सुवेसा। कानन कुंडल कुंचित केसा॥\n" +
+                        "हाथ वज्र औ ध्वजा विराजै। काँधे मुंज जनेऊ साजै॥\n" +
+                        "संकर सुवन केसरी नंदन। तेज प्रताप महा जग वंदन॥\n" +
+                        "विद्यावान गुणी अति चातुर। राम काज करिबे को आतुर॥\n" +
+                        "प्रभु चरित्र सुनिबे को रसिया। राम लखन सीता मन बसिया॥\n" +
+                        "सूक्ष्म रूप धरि सियहिं दिखावा। विकट रूप धरि लंका जरावा॥\n" +
+                        "भीम रूप धरि असुर संहारे। रामचंन्द्र के काज संवारे॥\n" +
+                        "लाय सजीवन लखन जियाये। श्री रघुवीर हरषि उर लाये॥\n" +
+                        "रघुपति की बहुत बड़ाई। तुम मम प्रिय भरतहि सम भाई॥\n" +
+                        "सहस बदन तुमरो जस गावैं। अस कहि श्रीपति कंठ लगावैं॥\n" +
+                        "संकट से हनुमान छुड़ावै। मन क्रम बचन ध्यान जो लावै॥\n" +
+                        "सब पर राम तपस्वी राजा। तिन के काज सकल तुम साजा॥\n" +
+                        "और मनोरथ जो कोई लावै। सोइ अमित जीवन फल पावै॥\n\n" +
+                        "दोहा:\n" +
+                        "पवनतनय संकट हरन मंगल मूरति रूप।\n" +
+                        "राम लखन सीता सहित हृदय बसहु सुर भूप॥",
+                lyricsMarathi = "दोहा:\n" +
+                        "श्री गुरु चरण सरोज रज निज मन मुकुर सुधारि।\n" +
+                        "बरनउँ रघुबर बिमल सुसु जो दायक फल चारि॥\n" +
+                        "बुद्धिहीन तनु जानिके सुमिरौं पवन कुमार।\n" +
+                        "बल बुद्धि विद्या देहु मोहि हरहु कलेश विकार॥\n\n" +
+                        "जय हनुमान ज्ञान गुन सागर। जय कपिस तिहुँ लोक उजागर।\n" +
+                        "राम दूत अतुलित बल धामा। अंजनी पुत्र पवनसुत नामा।\n" +
+                        "संकट मोचन हनुमान की जय,\n" +
+                        "रामभक्त हनुमान सदा सहाय।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Hanuman"
+            ),
+
             // --- 13. DURGA: Ambe Tu Hai Jagdambe Kali ---
             AartiEntity(
                 deity = "Durga",

@@ -1,0 +1,6 @@
+{
+  "name": "Divine Aarti Sangrah",
+  "description": "Aarti Sangrah with audio playback, multilingual lyrics in English, Hindi, and Marathi, bookmarks, font scaling, and daily reminders for major Hindu deities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

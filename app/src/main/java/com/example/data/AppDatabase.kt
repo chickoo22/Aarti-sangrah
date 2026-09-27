@@ -22,30 +22,23 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "divine_aarti_database"
+                    "mantramaya_database"
                 )
-                    .addCallback(AartiDatabaseCallback())
+                    .addCallback(DatabaseCallback())
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        private class AartiDatabaseCallback : RoomDatabase.Callback() {
+        private class DatabaseCallback : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        populateInitialData(database.aartiDao())
+                        database.aartiDao().insertAll(AartiSeedData.getSeedAartis())
                     }
                 }
-            }
-        }
-
-        suspend fun populateInitialData(dao: AartiDao) {
-            val initialList = AartiSeedData.getSeedAartis()
-            for (aarti in initialList) {
-                dao.insertAarti(aarti)
             }
         }
     }

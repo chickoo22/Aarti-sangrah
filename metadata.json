@@ -1,6 +1,6 @@
 {
-  "name": "Divine Aarti Sangrah",
-  "description": "Aarti Sangrah with audio playback, multilingual lyrics in English, Hindi, and Marathi, bookmarks, font scaling, and daily reminders for major Hindu deities.",
+  "name": "Mantramaya Aarti Chalisa",
+  "description": "Authentic Hindu Aartis, Chalisas and Stotras in Marathi, Hindi, and English with Search and Audio-visual experience",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -1,10 +1,7 @@
 package com.example.ui.screens
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,12 +11,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import com.example.viewmodel.AartiViewModel
+import com.example.app.viewmodel.AartiViewModel
+import com.example.ui.components.AdMobBanner
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,18 +27,8 @@ fun RemindersScreen(
 ) {
     val context = LocalContext.current
     val currentLang by viewModel.currentLanguage.collectAsState()
-    val reminderTime by viewModel.dailyReminderTime.collectAsState()
-    var notificationEnabled by remember { mutableStateOf(true) }
-    var showSuccessMessage by remember { mutableStateOf(false) }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        notificationEnabled = isGranted
-        if (isGranted) {
-            showSuccessMessage = true
-        }
-    }
+    var reminderTime by remember { mutableStateOf("06:00 AM") }
+    var isEnabled by remember { mutableStateOf(true) }
 
     Scaffold(
         topBar = {
@@ -48,124 +36,84 @@ fun RemindersScreen(
                 title = {
                     Text(
                         when (currentLang) {
-                            "hi" -> "दैनिक प्रार्थना अनुस्मारक"
-                            "mr" -> "दैनिक प्रार्थना स्मरण"
-                            else -> "Daily Prayer Reminders"
+                            "hi" -> "दैनिक पूजा रिमाइंडर"
+                            "mr" -> "दैनिक पूजा स्मरण"
+                            else -> "Daily Prayer Reminder"
                         }
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
             )
         }
-    ) { innerPadding ->
+    ) { paddingVals ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+                .padding(paddingVals)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(24.dp))
             Icon(
                 imageVector = Icons.Default.NotificationsActive,
                 contentDescription = null,
-                modifier = Modifier.size(72.dp),
+                modifier = Modifier.size(64.dp),
                 tint = MaterialTheme.colorScheme.primary
             )
-
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = when (currentLang) {
-                    "hi" -> "अपनी दैनिक पूजा और आरती के लिए समय निर्धारित करें"
-                    "mr" -> "तुमच्या दैनिक पूजा आणि आरत्यीसाठी वेळ सेट करा"
-                    else -> "Set your daily devotional prayer & aarti reminder"
+                    "hi" -> "सुबह की आरती और चालीसा पाठ के लिए रिमाइंडर सेट करें"
+                    "mr" -> "सकाळच्या आरती व चालिसा पठणासाठी स्मरण सेट करा"
+                    else -> "Set daily notification reminder for morning prayers"
                 },
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
+            Spacer(modifier = Modifier.height(32.dp))
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(2.dp)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
-                Column(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "Enable Daily Notifications", fontWeight = FontWeight.Bold)
-                        Switch(
-                            checked = notificationEnabled,
-                            onCheckedChange = { checked ->
-                                notificationEnabled = checked
-                                if (checked && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                    if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                                    }
-                                }
-                            }
-                        )
+                    Column {
+                        Text(text = "Morning Aarti Time", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(text = reminderTime, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
                     }
-
-                    HorizontalDivider()
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "Reminder Time")
-                        Text(
-                            text = reminderTime,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        listOf("06:00 AM", "07:00 AM", "06:00 PM", "07:00 PM").forEach { time ->
-                            OutlinedButton(
-                                onClick = {
-                                    viewModel.setDailyReminderTime(time)
-                                    showSuccessMessage = true
-                                },
-                                modifier = Modifier.weight(1f),
-                                contentPadding = PaddingValues(4.dp)
-                            ) {
-                                Text(text = time, fontSize = 12.sp)
-                            }
+                    Switch(
+                        checked = isEnabled,
+                        onCheckedChange = {
+                            isEnabled = it
+                            Toast.makeText(
+                                context,
+                                if (it) "Reminder Enabled for $reminderTime" else "Reminder Disabled",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    }
-                }
-            }
-
-            if (showSuccessMessage) {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text(
-                        text = "✓ Daily reminder successfully scheduled for $reminderTime!",
-                        modifier = Modifier.padding(12.dp),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        fontWeight = FontWeight.Bold
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.weight(1f))
+            AdMobBanner()
         }
     }
 }

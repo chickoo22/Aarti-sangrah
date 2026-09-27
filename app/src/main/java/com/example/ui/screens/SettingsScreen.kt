@@ -1,16 +1,24 @@
 package com.example.ui.screens
 
+import android.content.Intent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.viewmodel.AartiViewModel
+import androidx.compose.ui.unit.sp
+import com.example.app.viewmodel.AartiViewModel
+import com.example.ui.components.AdMobBanner
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,9 +26,8 @@ fun SettingsScreen(
     viewModel: AartiViewModel,
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
     val currentLang by viewModel.currentLanguage.collectAsState()
-    val isDarkMode by viewModel.isDarkMode.collectAsState()
-    val fontSize by viewModel.fontSize.collectAsState()
 
     Scaffold(
         topBar = {
@@ -29,134 +36,111 @@ fun SettingsScreen(
                     Text(
                         when (currentLang) {
                             "hi" -> "सेटिंग्स"
-                            "mr" -> "सेटिंग्स"
+                            "mr" -> "सेटिंग्ज"
                             else -> "Settings"
                         }
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
+                )
             )
         }
-    ) { innerPadding ->
+    ) { paddingVals ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(20.dp),
+                .padding(paddingVals)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Dark Mode Toggle Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column {
-                        Text(
-                            text = when(currentLang) { "hi" -> "डार्क मोड"; "mr" -> "डार्क मोड"; else -> "Dark Mode Interface" },
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = when(currentLang) { "hi" -> "आरामदायक आध्यात्मिक थीम"; "mr" -> "आरामदायी आध्यात्मिक थीम"; else -> "Comfortable spiritual dark theme" },
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                        )
-                    }
-                    Switch(
-                        checked = isDarkMode,
-                        onCheckedChange = { viewModel.toggleDarkMode() }
-                    )
-                }
-            }
-
             // Language Selection Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = when(currentLang) { "hi" -> "भाषा प्राथमिकता"; "mr" -> "भाषा प्राधान्य"; else -> "Default Language" },
-                        fontWeight = FontWeight.Bold
-                    )
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Language, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = when (currentLang) {
+                                "hi" -> "भाषा चुनें"
+                                "mr" -> "भाषा निवडा"
+                                else -> "Select Language"
+                            },
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        listOf("hi" to "हिंदी (Hindi)", "mr" to "मराठी (Marathi)", "en" to "English").forEach { (code, label) ->
-                            FilterChip(
-                                selected = currentLang == code,
-                                onClick = { viewModel.setLanguage(code) },
-                                label = { Text(label) }
+                        Button(
+                            onClick = { viewModel.setLanguage("mr") },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentLang == "mr") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
                             )
+                        ) {
+                            Text("मराठी")
+                        }
+                        Button(
+                            onClick = { viewModel.setLanguage("hi") },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentLang == "hi") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Text("हिंदी")
+                        }
+                        Button(
+                            onClick = { viewModel.setLanguage("en") },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (currentLang == "en") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Text("English")
                         }
                     }
-                }
-            }
-
-            // Font Size Slider Card
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "Aarti Lyrics Font Size: ${fontSize.toInt()}sp",
-                        fontWeight = FontWeight.Bold
-                    )
-                    Slider(
-                        value = fontSize,
-                        onValueChange = { viewModel.setFontSize(it) },
-                        valueRange = 12f..30f,
-                        steps = 8
-                    )
                 }
             }
 
             // About Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Info, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "About Mantramaya", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Divine Aarti Sangrah v1.0",
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        text = "Featuring audio playback, offline access, multilingual prayers for major Hindu deities, and daily prayer reminders.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                        text = "Mantramaya Aarti & Chalisa brings authentic Marathi and Hindi aartis, chalisas, and stotras right to your pocket. Version 1.0",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.weight(1f))
+            AdMobBanner()
         }
     }
 }

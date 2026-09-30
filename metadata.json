@@ -1,6 +1,6 @@
 {
   "name": "Mantramaya Aarti Chalisa",
-  "description": "Authentic Hindu Aartis, Chalisas and Stotras in Marathi, Hindi, and English with Search and Audio-visual experience",
+  "description": "Authentic Hindu Aartis, Chalisas, Bhajans and Stotras in Marathi, Hindi, and English with Search and Audio-visual experience",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

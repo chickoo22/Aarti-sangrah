@@ -10,34 +10,44 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val SaffronPrimary = Color(0xFFFF6F00)
-private val SaffronSecondary = Color(0xFFFFB300)
-private val SaffronTertiary = Color(0xFFD84315)
-private val WarmBackground = Color(0xFFFFF8E1)
-private val DarkBackground = Color(0xFF121212)
-
 private val LightColorScheme = lightColorScheme(
-    primary = SaffronPrimary,
-    secondary = SaffronSecondary,
-    tertiary = SaffronTertiary,
-    background = WarmBackground,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color(0xFF212121),
-    onSurface = Color(0xFF212121)
+    primary = BhagwaPrimary,                  // Deep Saffron / Bhagwa (#FF9933)
+    onPrimary = Color(0xFF261400),            // Deep brown for legibility on #FF9933
+    primaryContainer = BhagwaContainer,       // Soft warm saffron tint (#FFE0B2)
+    onPrimaryContainer = BhagwaOnContainer,   // High contrast deep brown text (#4E2600)
+    secondary = BhagwaDeepSaffron,            // Rich Saffron accent (#E65100)
+    onSecondary = Color.White,
+    secondaryContainer = BhagwaContainer,
+    onSecondaryContainer = BhagwaDark,
+    tertiary = BhagwaDark,                    // Deep Temple Saffron (#CC6600)
+    onTertiary = Color.White,
+    background = CleanCanvasBg,               // Crisp clean porcelain (#FAF7F5)
+    onBackground = TextPrimaryDark,           // High contrast dark charcoal (#211510)
+    surface = PureWhiteSurface,               // Pure white cards (#FFFFFF)
+    onSurface = TextPrimaryDark,
+    surfaceVariant = SurfaceVariantClean,     // Clean chip background (#F5ECE5)
+    onSurfaceVariant = TextSecondaryMuted,
+    outline = DividerClean
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = SaffronSecondary,
-    secondary = SaffronPrimary,
-    tertiary = SaffronTertiary,
-    background = DarkBackground,
-    surface = Color(0xFF1E1E1E),
-    onPrimary = Color.Black,
-    onSecondary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White
+    primary = DarkBhagwaPrimary,              // Deep Saffron (#FF9933)
+    onPrimary = Color(0xFF381A00),
+    primaryContainer = Color(0xFF804400),
+    onPrimaryContainer = Color(0xFFFFDDB8),
+    secondary = BhagwaLuminous,
+    onSecondary = Color(0xFF452200),
+    secondaryContainer = DarkSurfaceVariant,
+    onSecondaryContainer = Color(0xFFFFDDB8),
+    tertiary = BhagwaDeepSaffron,
+    onTertiary = Color.White,
+    background = DarkCanvasBg,                // Deep obsidian (#140F0C)
+    onBackground = DarkTextPrimary,
+    surface = DarkSurfaceCard,                // Elevated card (#221A15)
+    onSurface = DarkTextPrimary,
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = DarkTextSecondary,
+    outline = Color(0xFF544238)
 )
 
 @Composable

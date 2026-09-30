@@ -1,6 +1,10 @@
 <resources>
     <style name="Theme.Mantramaya" parent="android:style/Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">#FF9933</item>
+        <item name="android:navigationBarColor">#FAF7F5</item>
+        <item name="android:colorPrimary">#FF9933</item>
+        <item name="android:colorPrimaryDark">#CC6600</item>
+        <item name="android:colorAccent">#FF9933</item>
+        <item name="android:windowBackground">#FAF7F5</item>
     </style>
 </resources>

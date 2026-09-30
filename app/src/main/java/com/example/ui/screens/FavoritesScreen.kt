@@ -33,9 +33,9 @@ fun FavoritesScreen(
                 title = {
                     Text(
                         when (currentLang) {
-                            "hi" -> "प्रिय आरतियाँ व चालीसा"
-                            "mr" -> "आवडत्या आरत्या व चालिसा"
-                            else -> "Favorite Aartis & Chalisas"
+                            "hi" -> "प्रिय आरतियाँ, चालीसा व भजन"
+                            "mr" -> "आवडत्या आरत्या, चालिसा व भजने"
+                            else -> "Favorite Prayers & Bhajans"
                         }
                     )
                 },
@@ -46,8 +46,8 @@ fun FavoritesScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.*
@@ -24,6 +25,7 @@ import com.example.ui.components.AdMobBanner
 @Composable
 fun SettingsScreen(
     viewModel: AartiViewModel,
+    onNavigateToOnboarding: () -> Unit,
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
@@ -48,8 +50,8 @@ fun SettingsScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    navigationIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         }
@@ -118,6 +120,54 @@ fun SettingsScreen(
                 }
             }
 
+            // App Tour / Onboarding Card
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = when (currentLang) {
+                                "hi" -> "ऐप परिचय एवं मार्गदर्शिका"
+                                "mr" -> "मार्गदर्शिका व परिचय (App Tour)"
+                                else -> "App Introduction Tour"
+                            },
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = when (currentLang) {
+                            "hi" -> "ऐप की प्रमुख विशेषताएं एवं परिचय फिर से देखें।"
+                            "mr" -> "मंत्रमया ॲपमधील सर्व वैशिष्ट्ये व मार्गदर्शिका पुन्हा पहा."
+                            else -> "Revisit the welcome walkthrough and feature overview."
+                        },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    OutlinedButton(
+                        onClick = onNavigateToOnboarding,
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = when (currentLang) {
+                                "hi" -> "परिचय देखें (View Tour)"
+                                "mr" -> "मार्गदर्शिका पहा (View Tour)"
+                                else -> "View Walkthrough"
+                            },
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
             // About Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -132,7 +182,7 @@ fun SettingsScreen(
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Mantramaya Aarti & Chalisa brings authentic Marathi and Hindi aartis, chalisas, and stotras right to your pocket. Version 1.0",
+                        text = "Mantramaya Aarti & Chalisa brings authentic Marathi and Hindi aartis, chalisas, and stotras right to your pocket. 100% offline devotional companion. Version 1.0",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

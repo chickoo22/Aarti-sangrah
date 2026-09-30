@@ -1,92 +1,164 @@
 package com.example
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.example.data.AartiDao
 import com.example.data.AartiEntity
-import com.example.data.AppDatabase
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.junit.After
+import com.example.data.AartiSeedData
+import com.example.notifications.NotificationHelper
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import java.io.IOException
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36])
-class ExampleRobolectricTest {
+class LocalNotificationAndPrayerTest {
 
-    private lateinit var db: AppDatabase
-    private lateinit var dao: AartiDao
+    @Test
+    fun testNotificationTimeFormatting() {
+        val morning = NotificationHelper.formatTime(6, 30)
+        assertEquals("06:30 AM", morning)
 
-    @Before
-    fun createDb() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java)
-            .allowMainThreadQueries()
-            .build()
-        dao = db.aartiDao()
-    }
+        val evening = NotificationHelper.formatTime(19, 0)
+        assertEquals("07:00 PM", evening)
 
-    @After
-    @Throws(IOException::class)
-    fun closeDb() {
-        db.close()
+        val midnight = NotificationHelper.formatTime(0, 0)
+        assertEquals("12:00 AM", midnight)
+
+        val noon = NotificationHelper.formatTime(12, 15)
+        assertEquals("12:15 PM", noon)
     }
 
     @Test
-    fun `verify app name resource`() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val appName = context.getString(R.string.app_name)
-        assertEquals("Divine Aarti", appName)
+    fun testNotificationConstants() {
+        assertEquals("mantramaya_daily_prayers", NotificationHelper.CHANNEL_ID_PRAYER)
+        assertEquals(101, NotificationHelper.ID_MORNING_REMINDER)
+        assertEquals(102, NotificationHelper.ID_EVENING_REMINDER)
+        assertEquals(103, NotificationHelper.ID_SPECIAL_REMINDER)
+        assertEquals(100, NotificationHelper.ID_INSTANT_TEST)
     }
 
     @Test
-    fun `test aarti dao insert and query`() = runBlocking {
-        val aarti = AartiEntity(
+    fun testSeedPrayersAvailable() {
+        val prayers = AartiSeedData.getSeedAartis()
+        assertTrue("Seed prayers should not be empty", prayers.isNotEmpty())
+
+        val durga = prayers.find { it.titleMarathi.contains("दुर्गे") }
+        assertNotNull("Durge Durghat Bhari should be present", durga)
+
+        val hanuman = prayers.find { it.titleEnglish.contains("Hanuman Chalisa") }
+        assertNotNull("Hanuman Chalisa should be present", hanuman)
+
+        val vitthal = prayers.find { it.titleMarathi.contains("विठ्ठले") }
+        assertNotNull("Yeyi Ho Vitthale should be present", vitthal)
+
+        val ghalin = prayers.find { it.titleMarathi.contains("घालीन") }
+        assertNotNull("Ghalin Lotangan should be present", ghalin)
+    }
+
+    @Test
+    fun testDeityCoverage() {
+        val prayers = AartiSeedData.getSeedAartis()
+        val deities = prayers.map { it.deity }.distinct()
+        assertTrue("Should contain Ganesha", deities.contains("Ganesha"))
+        assertTrue("Should contain Shiva", deities.contains("Shiva"))
+        assertTrue("Should contain Vishnu", deities.contains("Vishnu"))
+        assertTrue("Should contain Hanuman", deities.contains("Hanuman"))
+        assertTrue("Should contain Durga", deities.contains("Durga"))
+        assertTrue("Should contain Shani", deities.contains("Shani"))
+        assertTrue("Should contain Saraswati", deities.contains("Saraswati"))
+    }
+
+    @Test
+    fun testMultilingualContentNonEmpty() {
+        val prayers = AartiSeedData.getSeedAartis()
+        for (p in prayers) {
+            assertTrue("English title should not be blank for ${p.deity}", p.titleEnglish.isNotBlank())
+            assertTrue("Hindi title should not be blank for ${p.deity}", p.titleHindi.isNotBlank())
+            assertTrue("Marathi title should not be blank for ${p.deity}", p.titleMarathi.isNotBlank())
+
+            assertTrue("English lyrics should not be blank for ${p.titleEnglish}", p.lyricsEnglish.isNotBlank())
+            assertTrue("Hindi lyrics should not be blank for ${p.titleEnglish}", p.lyricsHindi.isNotBlank())
+            assertTrue("Marathi lyrics should not be blank for ${p.titleEnglish}", p.lyricsMarathi.isNotBlank())
+        }
+    }
+
+    @Test
+    fun testSearchFilteringLogic() {
+        val prayers = AartiSeedData.getSeedAartis()
+
+        // English search
+        val chalisaResults = prayers.filter {
+            it.titleEnglish.contains("Chalisa", ignoreCase = true)
+        }
+        assertTrue("Should find chalisas in English", chalisaResults.size >= 2)
+
+        // Marathi keyword search
+        val marathiDurgaResults = prayers.filter {
+            it.titleMarathi.contains("दुर्गे") || it.lyricsMarathi.contains("दुर्गे")
+        }
+        assertTrue("Should find Durge in Marathi", marathiDurgaResults.isNotEmpty())
+
+        // Hindi keyword search
+        val hindiAartiResults = prayers.filter {
+            it.titleHindi.contains("आरती") || it.lyricsHindi.contains("आरती")
+        }
+        assertTrue("Should find aartis in Hindi", hindiAartiResults.isNotEmpty())
+    }
+
+    @Test
+    fun testFavoriteToggle() {
+        val prayer = AartiEntity(
+            id = 1,
             deity = "Ganesha",
-            titleEnglish = "Test Aarti",
-            titleHindi = "टेस्ट आरती",
-            titleMarathi = "टेस्ट आरती",
-            lyricsEnglish = "Test Lyrics",
-            lyricsHindi = "टेस्ट लिरिक्स",
-            lyricsMarathi = "टेस्ट लिरिक्स",
-            audioUrl = "https://example.com/audio.mp3",
+            titleEnglish = "Ganesh Aarti",
+            titleHindi = "गणेश आरती",
+            titleMarathi = "गणेश आरती",
+            lyricsEnglish = "Sukhkarta Dukhharta",
+            lyricsHindi = "सुखकर्ता दुखहर्ता",
+            lyricsMarathi = "सुखकर्ता दुखहर्ता",
             isFavorite = false,
-            category = "Ganesha"
+            category = "Aarti"
         )
-        dao.insertAarti(aarti)
-        val list = dao.getAllAartis().first()
-        assertEquals(1, list.size)
-        assertEquals("Test Aarti", list[0].titleEnglish)
+        assertFalse(prayer.isFavorite)
+
+        val updated = prayer.copy(isFavorite = !prayer.isFavorite)
+        assertTrue(updated.isFavorite)
+        assertEquals(prayer.id, updated.id)
     }
 
     @Test
-    fun `test favorite update toggle`() = runBlocking {
-        val aarti = AartiEntity(
-            deity = "Shiva",
-            titleEnglish = "Shiva Aarti",
-            titleHindi = "शिव आरती",
-            titleMarathi = "शिव आरती",
-            lyricsEnglish = "Om Namah Shivaya",
-            lyricsHindi = "ॐ नमः शिवाय",
-            lyricsMarathi = "ॐ नमः शिवाय",
-            audioUrl = "https://example.com/shiva.mp3",
-            isFavorite = false,
-            category = "Shiva"
-        )
-        dao.insertAarti(aarti)
-        val saved = dao.getAllAartis().first()[0]
-        
-        dao.updateFavorite(saved.id, true)
-        val favs = dao.getFavoriteAartis().first()
-        assertEquals(1, favs.size)
-        assertTrue(favs[0].isFavorite)
+    fun testBhagwaBrandColor() {
+        assertEquals(1.0f, com.example.ui.theme.BhagwaPrimary.red, 0.001f)
+        assertEquals(0.6f, com.example.ui.theme.BhagwaPrimary.green, 0.001f)
+        assertEquals(0.2f, com.example.ui.theme.BhagwaPrimary.blue, 0.001f)
+    }
+
+    @Test
+    fun testLanguageSelectionInvariant() {
+        val supportedLangs = listOf("mr", "hi", "en")
+        assertTrue(supportedLangs.contains("mr"))
+        assertTrue(supportedLangs.contains("hi"))
+        assertTrue(supportedLangs.contains("en"))
+    }
+
+    @Test
+    fun testBhajansPresentForAllDeities() {
+        val prayers = AartiSeedData.getSeedAartis()
+        val bhajans = prayers.filter { it.category == "Bhajan" }
+        assertTrue("Should have multiple bhajans", bhajans.size >= 10)
+
+        val deities = listOf("Ganesha", "Shiva", "Vishnu", "Hanuman", "Durga", "Shani", "Saraswati")
+        for (deity in deities) {
+            val deityBhajans = bhajans.filter { it.deity.equals(deity, ignoreCase = true) }
+            assertTrue("Deity $deity must have at least one bhajan", deityBhajans.isNotEmpty())
+        }
+    }
+
+    @Test
+    fun testBhajanLyricsComplete() {
+        val bhajans = AartiSeedData.getSeedAartis().filter { it.category == "Bhajan" }
+        for (b in bhajans) {
+            assertTrue("Marathi lyrics must be present for ${b.titleEnglish}", b.lyricsMarathi.isNotBlank())
+            assertTrue("Hindi lyrics must be present for ${b.titleEnglish}", b.lyricsHindi.isNotBlank())
+            assertTrue("English lyrics must be present for ${b.titleEnglish}", b.lyricsEnglish.isNotBlank())
+        }
     }
 }

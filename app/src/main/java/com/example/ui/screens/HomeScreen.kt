@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.compose.BackHandler
 import com.example.app.viewmodel.AartiViewModel
 import com.example.data.AartiEntity
 import com.example.ui.components.AdMobBanner
@@ -39,8 +40,26 @@ fun HomeScreen(
     val currentLang by viewModel.currentLanguage.collectAsState()
     val selectedDeity by viewModel.selectedDeity.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
+    val isLanguageSelected by viewModel.isLanguageSelected.collectAsState()
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
 
-    var step by remember { mutableStateOf("LANG") }
+    var step by remember(isLanguageSelected) { mutableStateOf(if (isLanguageSelected) "DEITY" else "LANG") }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+
+    // Hardware back button behavior:
+    // 1. If searching, clear search query first.
+    // 2. If viewing aarti/bhajan list for a deity, return to Deity grid.
+    // 3. If category filter is active, reset to ALL.
+    // 4. If at Deity grid, BackHandler is disabled, allowing standard Android exit/minimize.
+    BackHandler(enabled = searchQuery.isNotBlank() || step == "AARTI" || selectedCategory != "ALL") {
+        if (searchQuery.isNotBlank()) {
+            viewModel.setSearchQuery("")
+        } else if (step == "AARTI") {
+            step = "DEITY"
+        } else if (selectedCategory != "ALL") {
+            viewModel.setSelectedCategory("ALL")
+        }
+    }
 
     val deities = listOf(
         Triple("Ganesha", "भगवान गणेश", "श्री गणेश"),
@@ -52,26 +71,115 @@ fun HomeScreen(
         Triple("Saraswati", "माता सरस्वती", "माता सरस्वती")
     )
 
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            title = {
+                Text(
+                    text = when (currentLang) {
+                        "hi" -> "भाषा चुनें"
+                        "mr" -> "भाषा निवडा"
+                        else -> "Select Language"
+                    },
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(
+                        "mr" to "मराठी (Marathi)",
+                        "hi" to "हिंदी (Hindi)",
+                        "en" to "English"
+                    ).forEach { (code, name) ->
+                        val isSelected = currentLang == code
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+                            border = androidx.compose.foundation.BorderStroke(
+                                1.dp,
+                                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .clickable {
+                                    viewModel.setLanguage(code)
+                                    showLanguageDialog = false
+                                }
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(14.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = name,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                if (isSelected) {
+                                    Icon(Icons.Default.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text(
+                        when (currentLang) {
+                            "hi" -> "बंद करें"
+                            "mr" -> "बंद करा"
+                            else -> "Close"
+                        }
+                    )
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    if (step == "AARTI") {
+                        IconButton(onClick = {
+                            viewModel.setSearchQuery("")
+                            step = "DEITY"
+                        }) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back to Deities")
+                        }
+                    }
+                },
                 title = {
                     Text(
-                        text = when (currentLang) {
-                            "hi" -> "मंत्रमया आरती चालीसा संग्रह"
-                            "mr" -> "मंत्रमया आरती व चालिसा संग्रह"
-                            else -> "Mantramaya Aarti & Chalisa"
+                        text = when {
+                            selectedCategory == "Bhajan" -> when (currentLang) {
+                                "hi" -> "मंत्रमया भजन संग्रह"
+                                "mr" -> "मंत्रमया भजन संग्रह"
+                                else -> "Mantramaya Bhajan Sangrah"
+                            }
+                            else -> when (currentLang) {
+                                "hi" -> "मंत्रमया आरती, चालीसा व भजन"
+                                "mr" -> "मंत्रमया आरती, चालिसा व भजने"
+                                else -> "Mantramaya Aarti & Bhajans"
+                            }
                         },
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 17.sp
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 actions = {
+                    IconButton(onClick = { showLanguageDialog = true }) {
+                        Icon(Icons.Default.Language, contentDescription = "Language")
+                    }
                     IconButton(onClick = onNavigateToFavorites) {
                         Icon(Icons.Default.Favorite, contentDescription = "Favorites")
                     }
@@ -170,15 +278,15 @@ fun HomeScreen(
                         ) {
                             Text(
                                 text = when (currentLang) {
-                                    "hi" -> "Step 2: अपने आराध्य देव चुनें"
-                                    "mr" -> "Step 2: आपले आराध्य दैवत निवडा"
-                                    else -> "Step 2: Choose Deity"
+                                    "hi" -> if (selectedCategory == "Bhajan") "भजन संग्रह: अपने आराध्य देव चुनें" else "अपने आराध्य देव चुनें"
+                                    "mr" -> if (selectedCategory == "Bhajan") "भजन संग्रह: आपले आराध्य दैवत निवडा" else "आपले आराध्य दैवत निवडा"
+                                    else -> if (selectedCategory == "Bhajan") "Bhajans: Choose Deity" else "Choose Your Deity"
                                 },
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
-                            TextButton(onClick = { step = "LANG" }) {
+                            TextButton(onClick = { showLanguageDialog = true }) {
                                 Text(
                                     text = when (currentLang) {
                                         "hi" -> "भाषा बदलें"
@@ -190,7 +298,43 @@ fun HomeScreen(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        // Category Filter Chips (All, Aarti, Chalisa, Bhajan)
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            val categories = listOf(
+                                "ALL" to when (currentLang) { "hi" -> "सभी"; "mr" -> "सर्व"; else -> "All" },
+                                "Aarti" to when (currentLang) { "hi" -> "आरती"; "mr" -> "आरती"; else -> "Aarti" },
+                                "Chalisa" to when (currentLang) { "hi" -> "चालीसा"; "mr" -> "चालिसा"; else -> "Chalisa" },
+                                "Bhajan" to when (currentLang) { "hi" -> "भजन"; "mr" -> "भजन"; else -> "Bhajan" }
+                            )
+
+                            categories.forEach { (catKey, label) ->
+                                val isCatSelected = selectedCategory == catKey
+                                FilterChip(
+                                    selected = isCatSelected,
+                                    onClick = { viewModel.setSelectedCategory(catKey) },
+                                    label = {
+                                        Text(
+                                            text = label,
+                                            fontWeight = if (isCatSelected) FontWeight.Bold else FontWeight.Medium,
+                                            fontSize = 13.sp
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
@@ -206,10 +350,14 @@ fun HomeScreen(
                                     "mr" -> marathiName
                                     else -> deityKey
                                 }
+                                val count = aartis.count {
+                                    it.deity.equals(deityKey, ignoreCase = true) &&
+                                            (selectedCategory == "ALL" || it.category.equals(selectedCategory, ignoreCase = true))
+                                }
                                 Card(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(110.dp)
+                                        .height(118.dp)
                                         .clickable {
                                             viewModel.setSelectedDeity(deityKey)
                                             step = "AARTI"
@@ -221,31 +369,42 @@ fun HomeScreen(
                                     Column(
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            .padding(12.dp),
+                                            .padding(10.dp),
                                         verticalArrangement = Arrangement.Center,
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Box(
                                             modifier = Modifier
-                                                .size(44.dp)
+                                                .size(40.dp)
                                                 .clip(CircleShape)
                                                 .background(MaterialTheme.colorScheme.primaryContainer),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Icon(
-                                                imageVector = Icons.Default.SelfImprovement,
+                                                imageVector = if (selectedCategory == "Bhajan") Icons.Default.MusicNote else Icons.Default.SelfImprovement,
                                                 contentDescription = null,
                                                 tint = MaterialTheme.colorScheme.primary,
-                                                modifier = Modifier.size(24.dp)
+                                                modifier = Modifier.size(22.dp)
                                             )
                                         }
-                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Spacer(modifier = Modifier.height(6.dp))
                                         Text(
                                             text = displayName,
                                             style = MaterialTheme.typography.bodyMedium,
                                             fontWeight = FontWeight.Bold,
                                             textAlign = TextAlign.Center,
                                             maxLines = 1
+                                        )
+                                        Text(
+                                            text = when (selectedCategory) {
+                                                "Bhajan" -> "$count भजने"
+                                                "Aarti" -> "$count आरत्या"
+                                                "Chalisa" -> "$count चालिसा"
+                                                else -> "$count पाठ"
+                                            },
+                                            fontSize = 11.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                 }
@@ -257,15 +416,18 @@ fun HomeScreen(
                     }
                 }
 
-                // ==================== STEP 3: AARTI & CHALISA LIST ====================
+                // ==================== STEP 3: AARTI & CHALISA & BHAJAN LIST ====================
                 "AARTI" -> {
                     val deityAartis = aartis.filter {
                         it.deity.equals(selectedDeity, ignoreCase = true) &&
+                                (selectedCategory == "ALL" || it.category.equals(selectedCategory, ignoreCase = true)) &&
                                 (searchQuery.isBlank() ||
                                         it.titleEnglish.contains(searchQuery, ignoreCase = true) ||
-                                        it.titleHindi.contains(searchQuery) ||
-                                        it.titleMarathi.contains(searchQuery) ||
-                                        it.lyricsHindi.contains(searchQuery))
+                                        it.titleHindi.contains(searchQuery, ignoreCase = true) ||
+                                        it.titleMarathi.contains(searchQuery, ignoreCase = true) ||
+                                        it.lyricsMarathi.contains(searchQuery, ignoreCase = true) ||
+                                        it.lyricsHindi.contains(searchQuery, ignoreCase = true) ||
+                                        it.lyricsEnglish.contains(searchQuery, ignoreCase = true))
                     }
 
                     Column(
@@ -279,16 +441,36 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = when (currentLang) {
-                                    "hi" -> "Step 3: $selectedDeity की आरतियाँ व चालीसा"
-                                    "mr" -> "Step 3: $selectedDeity च्या आरत्या व चालिसा"
-                                    else -> "Step 3: $selectedDeity Aartis & Chalisas"
+                                text = when {
+                                    selectedCategory == "Bhajan" -> when (currentLang) {
+                                        "hi" -> "$selectedDeity के भजन"
+                                        "mr" -> "$selectedDeity ची भजने"
+                                        else -> "$selectedDeity Bhajans"
+                                    }
+                                    selectedCategory == "Chalisa" -> when (currentLang) {
+                                        "hi" -> "$selectedDeity की चालीसा"
+                                        "mr" -> "$selectedDeity च्या चालिसा"
+                                        else -> "$selectedDeity Chalisas"
+                                    }
+                                    selectedCategory == "Aarti" -> when (currentLang) {
+                                        "hi" -> "$selectedDeity की आरतियाँ"
+                                        "mr" -> "$selectedDeity च्या आरत्या"
+                                        else -> "$selectedDeity Aartis"
+                                    }
+                                    else -> when (currentLang) {
+                                        "hi" -> "$selectedDeity: आरती, चालीसा व भजन"
+                                        "mr" -> "$selectedDeity: आरती, चालिसा व भजने"
+                                        else -> "$selectedDeity Aartis & Bhajans"
+                                    }
                                 },
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
-                            TextButton(onClick = { step = "DEITY" }) {
+                            TextButton(onClick = {
+                                viewModel.setSearchQuery("")
+                                step = "DEITY"
+                            }) {
                                 Text(
                                     text = when (currentLang) {
                                         "hi" -> "देव बदलें"
@@ -310,9 +492,9 @@ fun HomeScreen(
                             placeholder = {
                                 Text(
                                     when (currentLang) {
-                                        "hi" -> "आरती या चालीसा खोजें..."
-                                        "mr" -> "आरती किंवा चालिसा शोधा..."
-                                        else -> "Search aarti or chalisa..."
+                                        "hi" -> "आरती, चालीसा या भजन खोजें..."
+                                        "mr" -> "आरती, चालिसा किंवा भजन शोधा..."
+                                        else -> "Search aarti, chalisa or bhajan..."
                                     }
                                 )
                             },
@@ -328,22 +510,98 @@ fun HomeScreen(
                             singleLine = true
                         )
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                        LazyColumn(
+                        // Category Filter Chips
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .weight(1f),
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                            contentPadding = PaddingValues(bottom = 16.dp)
+                                .padding(vertical = 4.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(deityAartis) { aarti ->
-                                AartiCard(
-                                    aarti = aarti,
-                                    currentLang = currentLang,
-                                    onReadClick = { onAartiClick(aarti.id) },
-                                    onFavoriteClick = { viewModel.toggleFavorite(aarti) }
+                            val categories = listOf(
+                                "ALL" to when (currentLang) { "hi" -> "सभी"; "mr" -> "सर्व"; else -> "All" },
+                                "Aarti" to when (currentLang) { "hi" -> "आरती"; "mr" -> "आरती"; else -> "Aarti" },
+                                "Chalisa" to when (currentLang) { "hi" -> "चालीसा"; "mr" -> "चालिसा"; else -> "Chalisa" },
+                                "Bhajan" to when (currentLang) { "hi" -> "भजन"; "mr" -> "भजन"; else -> "Bhajan" }
+                            )
+
+                            categories.forEach { (catKey, label) ->
+                                val isCatSelected = selectedCategory == catKey
+                                FilterChip(
+                                    selected = isCatSelected,
+                                    onClick = { viewModel.setSelectedCategory(catKey) },
+                                    label = {
+                                        Text(
+                                            text = label,
+                                            fontWeight = if (isCatSelected) FontWeight.Bold else FontWeight.Medium,
+                                            fontSize = 12.sp
+                                        )
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                                    )
                                 )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        if (deityAartis.isEmpty()) {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 16.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(24.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = when (currentLang) {
+                                            "hi" -> "इस श्रेणी में कोई परिणाम नहीं मिला"
+                                            "mr" -> "या श्रेणीत कोणताही पाठ आढळला नाही"
+                                            else -> "No items found in this category"
+                                        },
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    TextButton(onClick = {
+                                        viewModel.setSearchQuery("")
+                                        viewModel.setSelectedCategory("ALL")
+                                    }) {
+                                        Text(
+                                            when (currentLang) {
+                                                "hi" -> "सभी पाठ देखें"
+                                                "mr" -> "सर्व पाठ पहा"
+                                                else -> "Show All"
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        } else {
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                                contentPadding = PaddingValues(bottom = 16.dp)
+                            ) {
+                                items(deityAartis) { aarti ->
+                                    AartiCard(
+                                        aarti = aarti,
+                                        currentLang = currentLang,
+                                        onReadClick = { onAartiClick(aarti.id) },
+                                        onFavoriteClick = { viewModel.toggleFavorite(aarti) }
+                                    )
+                                }
                             }
                         }
 
@@ -369,39 +627,77 @@ fun AartiCard(
         else -> aarti.titleEnglish
     }
 
+    val (badgeText, badgeBg, badgeFg) = when (aarti.category) {
+        "Bhajan" -> Triple(
+            when (currentLang) { "hi" -> "🎵 भजन"; "mr" -> "🎵 भजन"; else -> "🎵 Bhajan" },
+            MaterialTheme.colorScheme.primary,
+            MaterialTheme.colorScheme.onPrimary
+        )
+        "Chalisa" -> Triple(
+            when (currentLang) { "hi" -> "📜 चालीसा"; "mr" -> "📜 चालिसा"; else -> "📜 Chalisa" },
+            MaterialTheme.colorScheme.secondaryContainer,
+            MaterialTheme.colorScheme.onSecondaryContainer
+        )
+        else -> Triple(
+            when (currentLang) { "hi" -> "🪔 आरती"; "mr" -> "🪔 आरती"; else -> "🪔 Aarti" },
+            MaterialTheme.colorScheme.primaryContainer,
+            MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onReadClick() },
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(14.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .background(badgeBg.copy(alpha = 0.18f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = when (aarti.category) {
+                        "Bhajan" -> Icons.Default.MusicNote
+                        "Chalisa" -> Icons.Default.AutoStories
+                        else -> Icons.Default.WbSunny
+                    },
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Surface(
-                    color = if (aarti.category == "Chalisa") MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.primaryContainer,
+                    color = badgeBg,
                     shape = RoundedCornerShape(6.dp)
                 ) {
                     Text(
-                        text = aarti.category,
+                        text = badgeText,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        fontSize = 10.sp,
+                        fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (aarti.category == "Chalisa") MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onPrimaryContainer
+                        color = badgeFg
                     )
                 }
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
             IconButton(onClick = onFavoriteClick) {

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.activity.compose.BackHandler
@@ -27,11 +28,17 @@ import com.example.app.viewmodel.AartiViewModel
 import com.example.data.AartiEntity
 import com.example.ui.components.AdMobBanner
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: AartiViewModel,
     onAartiClick: (Int) -> Unit,
+    onNavigateToBhajans: () -> Unit,
     onNavigateToFavorites: () -> Unit,
     onNavigateToReminders: () -> Unit,
     onNavigateToSettings: () -> Unit
@@ -45,6 +52,10 @@ fun HomeScreen(
 
     var step by remember(isLanguageSelected) { mutableStateOf(if (isLanguageSelected) "DEITY" else "LANG") }
     var showLanguageDialog by remember { mutableStateOf(false) }
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     // Hardware back button behavior:
     // 1. If searching, clear search query first.
@@ -67,6 +78,7 @@ fun HomeScreen(
         Triple("Vishnu", "भगवान विष्णु", "श्री विष्णू"),
         Triple("Hanuman", "संकटमोचन हनुमान", "संकटमोचन हनुमान"),
         Triple("Durga", "माता दुर्गा", "माता दुर्गा"),
+        Triple("KhatuShyam", "खाटू श्याम बाबा", "खाटू श्याम बाबा"),
         Triple("Shani", "शनि देव", "शनि देव"),
         Triple("Saraswati", "माता सरस्वती", "माता सरस्वती")
     )
@@ -139,60 +151,182 @@ fun HomeScreen(
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    if (step == "AARTI") {
-                        IconButton(onClick = {
-                            viewModel.setSearchQuery("")
-                            step = "DEITY"
-                        }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back to Deities")
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Spacer(modifier = Modifier.height(24.dp))
+                // Drawer Header
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 16.dp)
+                ) {
+                    Surface(
+                        modifier = Modifier.size(56.dp),
+                        shape = CircleShape,
+                        color = MaterialTheme.colorScheme.primaryContainer
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.MenuBook,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(32.dp)
+                            )
                         }
                     }
-                },
-                title = {
+                    Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = when {
-                            selectedCategory == "Bhajan" -> when (currentLang) {
-                                "hi" -> "मंत्रमया भजन संग्रह"
-                                "mr" -> "मंत्रमया भजन संग्रह"
-                                else -> "Mantramaya Bhajan Sangrah"
-                            }
-                            else -> when (currentLang) {
-                                "hi" -> "मंत्रमया आरती, चालीसा व भजन"
-                                "mr" -> "मंत्रमया आरती, चालिसा व भजने"
-                                else -> "Mantramaya Aarti & Bhajans"
-                            }
-                        },
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp
+                        text = "Mantramaya Aarti & Bhajans",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-                ),
-                actions = {
-                    IconButton(onClick = { showLanguageDialog = true }) {
-                        Icon(Icons.Default.Language, contentDescription = "Language")
-                    }
-                    IconButton(onClick = onNavigateToFavorites) {
-                        Icon(Icons.Default.Favorite, contentDescription = "Favorites")
-                    }
-                    IconButton(onClick = onNavigateToReminders) {
-                        Icon(Icons.Default.Notifications, contentDescription = "Reminders")
-                    }
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Storage,
+                                contentDescription = null,
+                                modifier = Modifier.size(12.dp),
+                                tint = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                            Text(
+                                text = "Room DB Offline Cached",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
                     }
                 }
-            )
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                // Menu Items
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Language, contentDescription = null) },
+                    label = { Text(when(currentLang) { "hi" -> "भाषा बदलें (Change Language)"; "mr" -> "भाषा बदला (Change Language)"; else -> "Change Language" }) },
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        showLanguageDialog = true
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Star, contentDescription = null) },
+                    label = { Text(when(currentLang) { "hi" -> "प्ले स्टोर पर रेटिंग दें"; "mr" -> "प्ले स्टोअरवर रेटिंग द्या"; else -> "Rate on Play Store" }) },
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        try {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
+                            context.startActivity(intent)
+                        } catch (e: Exception) {
+                            // Fallback
+                        }
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
+                    label = { Text(when(currentLang) { "hi" -> "पसंद (Favorites)"; "mr" -> "आवडते (Favorites)"; else -> "Favorites" }) },
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        onNavigateToFavorites()
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                    label = { Text(when(currentLang) { "hi" -> "रिमाइंडर (Reminders)"; "mr" -> "रिमाइंडर (Reminders)"; else -> "Reminders" }) },
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        onNavigateToReminders()
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                    label = { Text(when(currentLang) { "hi" -> "सेटिंग्स (Settings)"; "mr" -> "सेटिंग्स (Settings)"; else -> "Settings" }) },
+                    selected = false,
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        onNavigateToSettings()
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                )
+            }
         }
-    ) { paddingVals ->
+    ) {
+        Scaffold(
+                topBar = {
+                    TopAppBar(
+                        navigationIcon = {
+                            if (step == "AARTI") {
+                                IconButton(onClick = {
+                                    viewModel.setSearchQuery("")
+                                    step = "DEITY"
+                                }) {
+                                    Icon(Icons.Default.ArrowBack, contentDescription = "Back to Deities")
+                                }
+                            } else {
+                                IconButton(onClick = {
+                                    coroutineScope.launch { drawerState.open() }
+                                }) {
+                                    Icon(Icons.Default.Menu, contentDescription = "Open Menu")
+                                }
+                            }
+                        },
+                        title = {
+                            Text(
+                                text = when {
+                                    selectedCategory == "Bhajan" -> when (currentLang) {
+                                        "hi" -> "मंत्रमया भजन संग्रह"
+                                        "mr" -> "मंत्रमया भजन संग्रह"
+                                        else -> "Mantramaya Bhajan Sangrah"
+                                    }
+                                    else -> when (currentLang) {
+                                        "hi" -> "मंत्रमया आरती, चालीसा व भजन"
+                                        "mr" -> "मंत्रमया आरती, चालिसा व भजने"
+                                        else -> "Mantramaya Aarti & Bhajans"
+                                    }
+                                },
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 17.sp
+                            )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        actions = {
+                            IconButton(onClick = onNavigateToFavorites) {
+                                Icon(Icons.Default.Favorite, contentDescription = "Favorites")
+                            }
+                            IconButton(onClick = onNavigateToReminders) {
+                                Icon(Icons.Default.Notifications, contentDescription = "Reminders")
+                            }
+                        }
+                    )
+                }
+            ) { paddingVals ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -299,6 +433,232 @@ fun HomeScreen(
                         }
 
                         Spacer(modifier = Modifier.height(6.dp))
+
+                        // Search Bar at the top of the Home screen
+                        OutlinedTextField(
+                            value = searchQuery,
+                            onValueChange = { viewModel.setSearchQuery(it) },
+                            modifier = Modifier.fillMaxWidth(),
+                            placeholder = {
+                                Text(
+                                    when (currentLang) {
+                                        "hi" -> "आरती, चालीसा या भजन खोजें..."
+                                        "mr" -> "आरती, चालिसा किंवा भजन शोधा..."
+                                        else -> "Search Aartis, Chalisas, Bhajans..."
+                                    }
+                                )
+                            },
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                            trailingIcon = {
+                                if (searchQuery.isNotBlank()) {
+                                    IconButton(onClick = { viewModel.setSearchQuery("") }) {
+                                        Icon(Icons.Default.Clear, contentDescription = "Clear")
+                                    }
+                                }
+                            },
+                            shape = RoundedCornerShape(14.dp),
+                            singleLine = true,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f)
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        if (searchQuery.isNotBlank()) {
+                            val searchResults = aartis.filter {
+                                it.titleEnglish.contains(searchQuery, ignoreCase = true) ||
+                                        it.titleHindi.contains(searchQuery, ignoreCase = true) ||
+                                        it.titleMarathi.contains(searchQuery, ignoreCase = true) ||
+                                        it.deity.contains(searchQuery, ignoreCase = true) ||
+                                        it.category.contains(searchQuery, ignoreCase = true)
+                            }
+
+                            if (searchResults.isEmpty()) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                        Icon(
+                                            imageVector = Icons.Default.SearchOff,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(64.dp),
+                                            tint = MaterialTheme.colorScheme.outline
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Text(
+                                            text = when (currentLang) {
+                                                "hi" -> "कोई परिणाम नहीं मिला"
+                                                "mr" -> "कोणतेही निकाल सापडले नाहीत"
+                                                else -> "No results found"
+                                            },
+                                            style = MaterialTheme.typography.bodyLarge,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
+                                }
+                            } else {
+                                LazyColumn(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f),
+                                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                                ) {
+                                    items(searchResults) { item ->
+                                        val title = when (currentLang) {
+                                            "hi" -> item.titleHindi.ifBlank { item.titleEnglish }
+                                            "mr" -> item.titleMarathi.ifBlank { item.titleEnglish }
+                                            else -> item.titleEnglish
+                                        }
+
+                                        Card(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .clickable { onAartiClick(item.id) },
+                                            shape = RoundedCornerShape(16.dp),
+                                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(14.dp),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Box(
+                                                    modifier = Modifier
+                                                        .size(46.dp)
+                                                        .clip(CircleShape)
+                                                        .background(
+                                                            when (item.category) {
+                                                                "Bhajan" -> MaterialTheme.colorScheme.primaryContainer
+                                                                "Chalisa" -> MaterialTheme.colorScheme.tertiaryContainer
+                                                                else -> MaterialTheme.colorScheme.secondaryContainer
+                                                            }
+                                                        ),
+                                                    contentAlignment = Alignment.Center
+                                                ) {
+                                                    Icon(
+                                                        imageVector = when (item.category) {
+                                                            "Bhajan" -> Icons.Default.MusicNote
+                                                            "Chalisa" -> Icons.Default.MenuBook
+                                                            else -> Icons.Default.SelfImprovement
+                                                        },
+                                                        contentDescription = null,
+                                                        tint = MaterialTheme.colorScheme.primary,
+                                                        modifier = Modifier.size(24.dp)
+                                                    )
+                                                }
+
+                                                Spacer(modifier = Modifier.width(14.dp))
+
+                                                Column(modifier = Modifier.weight(1f)) {
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically,
+                                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                                    ) {
+                                                        Surface(
+                                                            shape = RoundedCornerShape(6.dp),
+                                                            color = MaterialTheme.colorScheme.secondaryContainer
+                                                        ) {
+                                                            Text(
+                                                                text = "${item.deity} • ${item.category}",
+                                                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                                                fontSize = 10.sp,
+                                                                fontWeight = FontWeight.Bold,
+                                                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                                            )
+                                                        }
+                                                    }
+                                                    Spacer(modifier = Modifier.height(4.dp))
+                                                    Text(
+                                                        text = title,
+                                                        style = MaterialTheme.typography.bodyLarge,
+                                                        fontWeight = FontWeight.Bold,
+                                                        maxLines = 2,
+                                                        overflow = TextOverflow.Ellipsis
+                                                    )
+                                                }
+
+                                                IconButton(
+                                                    onClick = { viewModel.toggleFavorite(item) }
+                                                ) {
+                                                    Icon(
+                                                        imageVector = if (item.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                                        contentDescription = "Favorite",
+                                                        tint = if (item.isFavorite) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Dedicated Bhajan Hub Banner Card
+                        Card(
+                            onClick = onNavigateToBhajans,
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp),
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(14.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(44.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primary),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.MusicNote,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onPrimary,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = when (currentLang) {
+                                            "hi" -> "🎵 दिव्य भजन संग्रह (Bhajan Section)"
+                                            "mr" -> "🎵 दिव्य भजन संग्रह (भजने)"
+                                            else -> "🎵 Divine Bhajan Section"
+                                        },
+                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.titleSmall,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = when (currentLang) {
+                                            "hi" -> "प्रत्येक देवता के लिए विशेष भजन सुनें व पढ़ें"
+                                            "mr" -> "प्रत्येक दैवताची विशेष भजने वाचा व अनुभवा"
+                                            else -> "Explore special bhajans for each deity"
+                                        },
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                                    )
+                                }
+                                Icon(
+                                    imageVector = Icons.Default.ArrowForward,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         // Category Filter Chips (All, Aarti, Chalisa, Bhajan)
                         Row(
@@ -612,6 +972,7 @@ fun HomeScreen(
             }
         }
     }
+}
 }
 
 @Composable

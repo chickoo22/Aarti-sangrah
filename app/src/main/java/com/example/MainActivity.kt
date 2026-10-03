@@ -76,9 +76,17 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(
                                 viewModel = viewModel,
                                 onAartiClick = { aartiId -> navController.navigate("reader/$aartiId") },
+                                onNavigateToBhajans = { navController.navigate("bhajans") },
                                 onNavigateToFavorites = { navController.navigate("favorites") },
                                 onNavigateToReminders = { navController.navigate("reminders") },
                                 onNavigateToSettings = { navController.navigate("settings") }
+                            )
+                        }
+                        composable("bhajans") {
+                            BhajansScreen(
+                                viewModel = viewModel,
+                                onBhajanClick = { aartiId -> navController.navigate("reader/$aartiId") },
+                                onBack = { navController.popBackStack() }
                             )
                         }
                         composable(

@@ -644,6 +644,546 @@ object AartiSeedData {
                 audioUrl = "",
                 isFavorite = false,
                 category = "Bhajan"
+            ),
+
+            // --- 25. KHATU SHYAM: Khatu Shyam Ji Aarti ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Om Jai Shri Shyam Hare (Khatu Shyam Aarti)",
+                titleHindi = "ॐ जय श्री श्याम हरे, बाबा जय श्री श्याम हरे",
+                titleMarathi = "ॐ जय श्री श्याम हरे (खाटू श्याम आरती)",
+                lyricsEnglish = "Om Jai Shri Shyam Hare, Baba Jai Shri Shyam Hare,\n" +
+                        "Khatu Nagari Basi, Darshan De Pyare.\n\n" +
+                        "Neel Ghode Swar Ho, Baan Hath Dhari,\n" +
+                        "Bhakt Janon Ke Sankat, Pal Mein Ho Vari.",
+                lyricsHindi = "ॐ जय श्री श्याम हरे, बाबा जय श्री श्याम हरे।\n" +
+                        "खाटू नगरी वासी, दर्शन दे प्यारे॥\n\n" +
+                        "नील घोड़े स्वर हो, बाण हाथ धारी।\n" +
+                        "भक्त जनों के संकट, पल में हो वारी।",
+                lyricsMarathi = "ॐ जय श्री श्याम हरे, बाबा जय श्री श्याम हरे।\n" +
+                        "खाटू नगरी वासी, दर्शन दे प्यारे॥\n\n" +
+                        "हारे का सहारा बाबा श्याम हमारा, भक्तजनांचे संकट हरोनी देई आनंद सारा।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Aarti"
+            ),
+
+            // --- 26. KHATU SHYAM: Haare Ka Sahara Baba Shyam Hamara ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Haare Ka Sahara Baba Shyam Hamara",
+                titleHindi = "हारे का सहारा बाबा श्याम हमारा",
+                titleMarathi = "हारे का सहारा बाबा श्याम हमारा (भजन)",
+                lyricsEnglish = "Haare Ka Sahara Baba Shyam Hamara,\n" +
+                        "Tin Lok Ke Nath Tuhi Hai Prabhu Hamara.\n\n" +
+                        "Khatu Me Viraje Shish Ke Dani,\n" +
+                        "Mahima Teri Gaye Duniya Sani.",
+                lyricsHindi = "हारे का सहारा बाबा श्याम हमारा,\n" +
+                        "तीन लोक के नाथ तूही है प्रभु हमारा।\n\n" +
+                        "खाटू में विराजे शीश के दानी,\n" +
+                        "महिमा तेरी गाए दुनिया सानी।",
+                lyricsMarathi = "हारे का सहारा बाबा श्याम हमारा, तीन लोक के नाथ तूची आधार हमारा।\n" +
+                        "खाटूधामी बसे श्याम म्होरक्या, भक्तांच्या हाकेला धावे सावकाश.",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 27. SHIVA BHAJAN: Shankar Mahadev Stuti ---
+            AartiEntity(
+                deity = "Shiva",
+                titleEnglish = "Shankar Mahadev Stuti (Kailash Ke Nivasi)",
+                titleHindi = "कैलाश के निवासी नमो बार बार हो",
+                titleMarathi = "कैलाश के निवासी नमो बार बार हो (शिव भजन)",
+                lyricsEnglish = "Kailash Ke Nivasi Namo Bar Bar Ho,\n" +
+                        "Bhootnath Shambhu Namo Bar Bar Ho.\n\n" +
+                        "Trishul Dhari Damru Bajave, Jagat Ka Palan Tuhi Rachave.",
+                lyricsHindi = "कैलाश के निवासी नमो बार बार हो,\n" +
+                        "भूतनाथ शंभू नमो बार बार हो।\n\n" +
+                        "त्रिशूल धारी डमरू बजावे, जगत का पालन तूही रचावे।",
+                lyricsMarathi = "कैलाशवासी शिवशंभू नमो बार बार हो, त्रिशूलधारी डमरूधारी नमन तुझे वारंवार हो।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 28. RAMA BHAJAN: Ram Ji Ki Sena Chali ---
+            AartiEntity(
+                deity = "Vishnu",
+                titleEnglish = "Ram Ji Ki Sena Chali (Ram Bhajan)",
+                titleHindi = "राम जी की सेना चली, हर हर महादेवा",
+                titleMarathi = "राम जी की सेना चली (राम भजन)",
+                lyricsEnglish = "Ram Ji Ki Sena Chali, Har Har Mahadeva,\n" +
+                        "Ran Mein Jite Raghuvir, Jai Jai Raghunanda.\n\n" +
+                        "Sita Ram Ki Jai Bolo, Hanuman Ki Jai.",
+                lyricsHindi = "राम जी की सेना चली, हर हर महादेवा।\n" +
+                        "रण में जीते रघुवीर, जय जय रघुनंदन।",
+                lyricsMarathi = "रामजी की सेना चली, जय श्रीराम जय जय हनुमान।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 29. KRISHNA BHAJAN: Yashoda Nandan Kanhaiya ---
+            AartiEntity(
+                deity = "Vishnu",
+                titleEnglish = "Yashoda Nandan Kanhaiya (Krishna Bhajan)",
+                titleHindi = "यशौदा नंदन कन्हैया मुरली मनोहर गोपाल",
+                titleMarathi = "यशौदा नंदन कन्हैया (कृष्ण भजन)",
+                lyricsEnglish = "Yashoda Nandan Kanhaiya Murli Manohar Gopal,\n" +
+                        "Radhe Radhe Gayo Re Manwa.",
+                lyricsHindi = "यशौदा नंदन कन्हैया मुरली मनोहर गोपाल,\n" +
+                        "राधे राधे गायो रे मनवा।",
+                lyricsMarathi = "यशोदेचा नंद गोपाल, मुरली मनोहर बाळ गोपाळ।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 30. GANESHA BHAJAN: Sukh Karta Dukh Harta Stotram ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Sukhkarta Dukhaharta Varta Vighnachi (Traditional)",
+                titleHindi = "सुखकर्ता दुःखहर्ता वार्ता विघनाची (पारंपारिक आरती)",
+                titleMarathi = "सुखकर्ता दुःखहर्ता वार्ता विघनाची (पारंपारिक आरती)",
+                lyricsEnglish = "Sukhkarta Dukhaharta Varta Vighnachi,\n" +
+                        "Nurvi Purvi Prem Krupa Jayachi.\n" +
+                        "Sarangi Sarangi Sundar Uti Shendura,\n" +
+                        "Kanthi Jhale Muktaphalaanchi Mala.",
+                lyricsHindi = "सुखकर्ता दुःखहर्ता वार्ता विघनाची, नुरवी पूर्वी प्रेम कृपा जयाची।",
+                lyricsMarathi = "सुखकर्ता दुःखहर्ता वार्ता विघनाची, नुरवी पूर्वी प्रेम कृपा जयाची।\n" +
+                        "सर्वांगी सुंदर उटी शेंदुरा, कंठी झळके माळ मुक्ताफळांची।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Aarti"
+            ),
+
+            // --- 31. HANUMAN BHAJAN: Sankat Mochan Hanuman Ashtak ---
+            AartiEntity(
+                deity = "Hanuman",
+                titleEnglish = "Sankat Mochan Hanuman Ashtak",
+                titleHindi = "संकटमोचन हनुमान अष्टक (बाल समय रवि भाषा लीन्हो)",
+                titleMarathi = "संकटमोचन हनुमान अष्टक",
+                lyricsEnglish = "Bal Samay Ravi Bhaksha Leenho Teenon Lok Bhayo Andhiyaro,\n" +
+                        "Tahu So Trask Bhayo Jag Ko Yeh Sankat Kaahu Se Jaat Na Taro.",
+                lyricsHindi = "बाल समय रवि भक्शास्त्र लीन्हो, तीनों लोक भयो अंधियारो।",
+                lyricsMarathi = "संकटमोचन हनुमान अष्टक - बाळ समय रवी भक्षित कीन्हो, तिनो लोक भयभीत भयो।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 32. DURGA BHAJAN: Jai Ambe Gauri Aarti ---
+            AartiEntity(
+                deity = "Durga",
+                titleEnglish = "Jai Ambe Gauri Aarti (Full Version)",
+                titleHindi = "जय अम्बे गौरी मैया जय श्यामा गौरी",
+                titleMarathi = "जय अम्बे गौरी आरती",
+                lyricsEnglish = "Jai Ambe Gauri Maiya Jai Shyama Gauri,\n" +
+                        "Nishdin Dhyavat Brahma Shiv Ji Bhaari.\n" +
+                        "Mangal Murti Data Kripalu, Sukhkarta Dukhharta.",
+                lyricsHindi = "जय अम्बे गौरी मैया जय श्यामा गौरी, निशदिन ध्यावत ब्रह्मा शिवजी भारी।",
+                lyricsMarathi = "जय अम्बे गौरी मैया जय श्यामा गौरी, निसदिन ध्यावति ब्रह्मा शिवजी हरी।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Aarti"
+            ),
+
+            // --- 33. KHATU SHYAM: Hum Haare Haare Haare, Tum Haare Ke Sahare ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Hum Haare Haare Haare, Tum Haare Ke Sahare",
+                titleHindi = "हम हारे हारे हारे, तुम हारे के सहारे",
+                titleMarathi = "हम हारे हारे हारे, तुम हारे के सहारे",
+                lyricsEnglish = "Hum Haare Haare Haare, Tum Haare Ke Sahare,\n" +
+                        "Hum Aaye Dar Tumhare, Baba Shyam Pyaare.\n\n" +
+                        "Khatu Ke Raja Tum Ho, Dukh Harta Sukh Data,\n" +
+                        "Jo Bhi Sharan Me Aaya, Uska Hua Bol Bala.",
+                lyricsHindi = "हम हारे हारे हारे, तुम हारे के सहारे,\n" +
+                        "हम आए दर तुम्हारे, बाबा श्याम प्यारे।\n\n" +
+                        "खाटू के राजा तुम हो, दुःख हरता सुख दाता,\n" +
+                        "जो भी शरण में आया, उसका हुआ बोल बाला।",
+                lyricsMarathi = "हम हारे हारे हारे, तुम हारे के सहारे, बाबा श्याम तुम्हारे दर आए सारे।\n" +
+                        "खाटू के राजा तूची आमचा कैवारी, दुःखातून तारी आम्हा श्रीश्याम मुरारी।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 34. KHATU SHYAM: Mere Sar Par Rakh Baba Apne Ye Dono Hath ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Mere Sar Par Rakh Baba Apne Ye Dono Hath",
+                titleHindi = "मेरे सर पर रख बाबा अपने ये दोनों हाथ",
+                titleMarathi = "मेरे सर पर रख बाबा अपने ये दोनों हाथ",
+                lyricsEnglish = "Mere Sar Par Rakh Baba Apne Ye Dono Hath,\n" +
+                        "Sada Rehna Mere Baba Tu Banke Mera Sath.\n\n" +
+                        "Tera Bharosa Mujhko, Duniya Se Kya Darna,\n" +
+                        "Khatu Wale Shyam Mera Pal Pal Tu Hi Saware.",
+                lyricsHindi = "मेरे सर पर रख बाबा अपने ये दोनों हाथ,\n" +
+                        "सदा रहना मेरे बाबा तू बनकर मेरा साथ।\n\n" +
+                        "तेरा भरोसा मुझको, दुनिया से क्या डरना,\n" +
+                        "खाटू वाले श्याम मेरा पल पल तू ही संवारे।",
+                lyricsMarathi = "मेरे सर पर रख बाबा अपने ये दोनों हाथ, सदा रहना मेरे बाबा तू बनकर मेरा साथ।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 35. KHATU SHYAM: Lagan Tumse Laga Baithe Jo Hoga Dekha Jayega ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Lagan Tumse Laga Baithe Jo Hoga Dekha Jayega",
+                titleHindi = "लगन तुमसे लगा बैठे जो होगा देखा जाएगा",
+                titleMarathi = "लगन तुमसे लगा बैठे जो होगा देखा जाएगा",
+                lyricsEnglish = "Lagan Tumse Laga Baithe Jo Hoga Dekha Jayega,\n" +
+                        "Tumhe Apna Bana Baithe Jo Hoga Dekha Jayega.\n\n" +
+                        "Zamana Chahe Dushman Ho, Hamein Kya Fikr Iski,\n" +
+                        "Hum Shyam Se Dil Laga Baithe.",
+                lyricsHindi = "लगन तुमसे लगा बैठे जो होगा देखा जाएगा,\n" +
+                        "तुम्हे अपना बना बैठे जो होगा देखा जाएगा।\n\n" +
+                        "ज़माना चाहे दुश्मन हो, हमें क्या फिक्र इसकी,\n" +
+                        "हम श्याम से दिल लगा बैठे।",
+                lyricsMarathi = "लगन तुमसे लगा बैठे जो होगा देखा जाएगा, तुम्हे अपना बना बैठे जो होगा देखा जाएगा।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 36. KHATU SHYAM: Sanwali Surat Pe Mohan Dil Deewana Ho Gaya ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Sanwali Surat Pe Mohan Dil Deewana Ho Gaya",
+                titleHindi = "सांवली सूरत पे मोहन, दिल दीवाना हो गया",
+                titleMarathi = "सांवली सूरत पे मोहन, दिल दीवाना हो गया",
+                lyricsEnglish = "Sanwali Surat Pe Mohan, Dil Deewana Ho Gaya,\n" +
+                        "Khatu Wale Ki Ada Par, Mera Dil Fida Ho Gaya.\n\n" +
+                        "Naino Se Naina Mile To, Jadu Sa Chal Gaya,\n" +
+                        "Baba Shyam Ki Kripa Se, Bhagya Mera Jag Gaya.",
+                lyricsHindi = "सांवली सूरत पे मोहन, दिल दीवाना हो गया,\n" +
+                        "खाटू वाले की अदा पर, मेरा दिल फिदा हो गया।\n\n" +
+                        "नैनों से नैन मिले तो, जादू सा चल गया,\n" +
+                        "बाबा श्याम की कृपा से, भाग्य मेरा जग गया।",
+                lyricsMarathi = "सांवली सूरत पे मोहन, दिल दीवाना हो गया, खाटू वाले की अदा पर मेरा दिल फिदा हो गया।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 37. KHATU SHYAM: Haara Hoon Baba Par Tujhpe Bharosa Hai ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Haara Hoon Baba Par Tujhpe Bharosa Hai",
+                titleHindi = "हारा हूँ बाबा पर तुझपे भरोसा है",
+                titleMarathi = "हारा हूँ बाबा पर तुझपे भरोसा है",
+                lyricsEnglish = "Haara Hoon Baba Par Tujhpe Bharosa Hai,\n" +
+                        "Meri Jeet Ka Rasta Tere Hath Me Hai.\n\n" +
+                        "Sankat Se Mujhe Tumhe Hi Nikalna Hai,\n" +
+                        "Khatu Ke Shyam Mera Haath Pakadna Hai.",
+                lyricsHindi = "हारा हूँ बाबा पर तुझपे भरोसा है,\n" +
+                        "मेरी जीत का रास्ता तेरे हाथ में है।\n\n" +
+                        "संकट से मुझे तुम्हे ही निकालना है,\n" +
+                        "खाटू के श्याम मेरा हाथ पकड़ना है।",
+                lyricsMarathi = "हारा हूँ बाबा पर तुझपे भरोसा है, मेरी जीत का रास्ता तेरे हाथ में है।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 38. KHATU SHYAM: Mera Baba Rang Rangila Main To Nachungi ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Mera Baba Rang Rangila Main To Nachungi",
+                titleHindi = "मेरा बाबा रंग रंगीला मैं तो नाचूंगी",
+                titleMarathi = "मेरा बाबा रंग रंगीला मैं तो नाचूंगी",
+                lyricsEnglish = "Mera Baba Rang Rangila Main To Nachungi,\n" +
+                        "Khatu Ke Darbaar Me Jhoome Gaungi.\n\n" +
+                        "Neel Ghode Wala Mera Shyam Pyara Hai,\n" +
+                        "Sari Duniya Me Uska Hi Ujala Hai.",
+                lyricsHindi = "मेरा बाबा रंग रंगीला मैं तो नाचूंगी,\n" +
+                        "खाटू के दरबार में झूमे गाऊंगी।\n\n" +
+                        "नील घोड़े वाला मेरा श्याम प्यारा है,\n" +
+                        "सारी दुनिया में उसका ही उजाला है।",
+                lyricsMarathi = "मेरा बाबा रंग रंगीला मैं तो नाचूंगी, खाटू के दरबार में झूम गाऊंगी।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 39. KHATU SHYAM: Teen Baan Ke Dhari Tino Baan Chalao Na ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Teen Baan Ke Dhari Tino Baan Chalao Na",
+                titleHindi = "तीन बाण के धारी, तीनों बाण चलाओ ना",
+                titleMarathi = "तीन बाण के धारी, तीनों बाण चलाओ ना",
+                lyricsEnglish = "Teen Baan Ke Dhari, Tino Baan Chalao Na,\n" +
+                        "Apne Is Bhakt Ki Bhi Sudh Bisrao Na.\n\n" +
+                        "Barbreek Avtar Ho Tum Shyam Hamare,\n" +
+                        "Aake Darshan De Do O Pran Pyaare.",
+                lyricsHindi = "तीन बाण के धारी, तीनों बाण चलाओ ना,\n" +
+                        "अपने इस भक्त की भी सुध बिसराओ ना।\n\n" +
+                        "बर्बरीक अवतार हो तुम श्याम हमारे,\n" +
+                        "आके दर्शन दे दो ओ प्राण प्यारे।",
+                lyricsMarathi = "तीन बाण के धारी, तीनों बाण चलाओ ना, अपने इस भक्त की भी सुध बिसराओ ना।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 40. KHATU SHYAM: O Sanware Mujhe Teri Jarurat Hai ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "O Sanware Mujhe Teri Jarurat Hai",
+                titleHindi = "ओ सँवारे मुझे तेरी जरुरत है",
+                titleMarathi = "ओ सँवारे मुझे तेरी जरुरत है",
+                lyricsEnglish = "O Sanware Mujhe Teri Jarurat Hai,\n" +
+                        "Har Mod Par Baba Mujhe Teri Chahat Hai.\n\n" +
+                        "Jab Jab Dhadkan Chali Hai Mera Naam Liya,\n" +
+                        "Tune Har Sankat Me Mujhe Sambhal Liya.",
+                lyricsHindi = "ओ सँवारे मुझे तेरी जरुरत है,\n" +
+                        "हर मोड़ पर बाबा मुझे तेरी चाहत है।\n\n" +
+                        "जब जब धड़कन चली है मेरा नाम लिया,\n" +
+                        "तूने हर संकट में मुझे संभाल लिया।",
+                lyricsMarathi = "ओ सँवारे मुझे तेरी जरुरत है, हर मोड़ पर बाबा मुझे तेरी चाहत है।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 41. KHATU SHYAM: Naukri P Rakh Le Baba Tankhwa Jo Bhi De Dena ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Naukri Pe Rakh Le Baba Tankhwa Jo Bhi De Dena",
+                titleHindi = "नौकरी पे रख ले बाबा तनख्वा जो भी दे देना",
+                titleMarathi = "नौकरी पे रख ले बाबा तनख्वा जो भी दे देना",
+                lyricsEnglish = "Naukri Pe Rakh Le Baba Tankhwa Jo Bhi De Dena,\n" +
+                        "Apne Darbar Me Mujhko Bhi Thodi Se Jaga Dena.\n\n" +
+                        "Seva Karu Me Teri Shyam Pyare, Saari Umar Tere Charano Me Gujare.",
+                lyricsHindi = "नौकरी पे रख ले बाबा तनख्वा जो भी दे देना,\n" +
+                        "अपने दरबार में मुझको भी थोड़ी सी जगह देना।\n\n" +
+                        "सेवा करू मैं तेरी श्याम प्यारे, सारी उमर तेरे चरणों में गुजारे।",
+                lyricsMarathi = "नौकरी पे रख ले बाबा तनख्वा जो भी दे देना, अपने दरबार में मुझको भी थोड़ी सी जगह देना।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 42. KHATU SHYAM: Sanwariya Kar Do Beda Paar ---
+            AartiEntity(
+                deity = "KhatuShyam",
+                titleEnglish = "Sanwariya Kar Do Beda Paar (Khatu Shyam Bhajan)",
+                titleHindi = "सांवरिया कर दो बेड़ा पार, खाटू वाले नैया पार लगाओ",
+                titleMarathi = "सांवरिया कर दो बेड़ा पार",
+                lyricsEnglish = "Sanwariya Kar Do Beda Paar, Khatu Wale Naiya Paar Lagao,\n" +
+                        "Bhavsagar Se Mujhko Ubaaro.\n\n" +
+                        "Charano Me Tere Dhyaan Lagaya, Shyam Baba Darshan Paaya.",
+                lyricsHindi = "सांवरिया कर दो बेड़ा पार, खाटू वाले नैया पार लगाओ,\n" +
+                        "भवसागर से मुझको उबारो।\n\n" +
+                        "चरणों में तेरे ध्यान लगाया, श्याम बाबा दर्शन पाया।",
+                lyricsMarathi = "सांवरिया कर दो बेड़ा पार, खाटू वाले नैया पार लगाओ, भवसागर से मुझको उबारो।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 43. GANESHA: Gajanand Maharaj Padharo Kirtan Ki Taiyari Hai ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Gajanand Maharaj Padharo Kirtan Ki Taiyari Hai",
+                titleHindi = "गजानंद महाराज पधारो कीर्तन की तैयारी है",
+                titleMarathi = "गजानंद महाराज पधारो कीर्तन की तैयारी है",
+                lyricsEnglish = "Gajanand Maharaj Padharo Kirtan Ki Taiyari Hai,\n" +
+                        "Aao Gauri Nandan Aao, Bhakto Ki Baliyari Hai.\n\n" +
+                        "Phoolon Se Darbar Sajaya, Deep Jalaye Sare Hai,\n" +
+                        "Aaja Bholenath Ke Pyare, Kirtan Ki Taiyari Hai.",
+                lyricsHindi = "गजानंद महाराज पधारो, कीर्तन की तैयारी है।\n" +
+                        "आओ गौरी नंदन आओ, भक्तों की बलियारी है॥\n\n" +
+                        "फूलों से दरबार सजाया, दीप जलाए सारे हैं।\n" +
+                        "आजा भोलेनाथ के प्यारे, कीर्तन की तैयारी है।",
+                lyricsMarathi = "गजानंद महाराज पधारो कीर्तन की तैयारी है, गौरी नंदन बाप्पा यावे, भक्तांची तयारी आहे.",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 44. GANESHA: Ghar Me Padharo Gajanand Ji Mere Ghar Me Padharo ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Ghar Me Padharo Gajanand Ji Mere Ghar Me Padharo",
+                titleHindi = "घर में पधारो गजानंद जी मेरे घर में पधारो",
+                titleMarathi = "घर में पधारो गजानंद जी मेरे घर में पधारो",
+                lyricsEnglish = "Ghar Me Padharo Gajanand Ji Mere Ghar Me Padharo,\n" +
+                        "Riddhi Siddhi Le Ke Aao, Mangal Bhavan Karo.\n\n" +
+                        "Deepak Jyoti Jale Aangan Me, Tera Dhyaan Lagaya Hai,\n" +
+                        "Aaja Bappa Morya Re, Bhakt Tujhe Bulaya Hai.",
+                lyricsHindi = "घर में पधारो गजानंद जी, मेरे घर में पधारो।\n" +
+                        "रिद्धि सिद्धि ले के आओ, मंगल भवन करो॥\n\n" +
+                        "दीपक ज्योति जले आंगन में, तेरा ध्यान लगाया है।\n" +
+                        "आजा बप्पा मोरिया रे, भक्त तुझे बुलाया है।",
+                lyricsMarathi = "घर में पधारो गजानंद जी मेरे घर में पधारो, रिद्धि सिद्धि सोबत घेऊन सुख शांती लावो.",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 45. GANESHA: Mhara Kirtan Me Ras Barsao ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Mhara Kirtan Me Ras Barsao Gajanand",
+                titleHindi = "म्हारा कीर्तन में रस बरसाओ गजानंद जी",
+                titleMarathi = "म्हारा कीर्तन में रस बरसाओ",
+                lyricsEnglish = "Mhara Kirtan Me Ras Barsao Gajanand Ji,\n" +
+                        "Aao Gauri Ke Nandan Charano Me Sheesh Jhukao.\n\n" +
+                        "Modak Ka Bhog Lagao, Darshan De Do Pyare,\n" +
+                        "Sare Sankat Har Lo Ganpati Hamare.",
+                lyricsHindi = "म्हारा कीर्तन में रस बरसाओ गजानंद जी,\n" +
+                        "आओ गौरी के नंदन चरणों में शीश झुकाओ।\n\n" +
+                        "मोदक का भोग लगाओ, दर्शन दे दो प्यारे,\n" +
+                        "सारे संकट हर लो गणपति हमारे।",
+                lyricsMarathi = "म्हारा कीर्तन में रस बरसाओ गजानंद जी, गौरी नंदन बाप्पा चरणो में नमन.",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 46. GANESHA: Shiv Gaura Ke Ladle Ganesh Ji ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Shiv Gaura Ke Ladle Ganesh Ji",
+                titleHindi = "शिव गौरा के लाडले गणेश जी",
+                titleMarathi = "शिव गौरा के लाडले गणेश जी",
+                lyricsEnglish = "Shiv Gaura Ke Ladle Ganesh Ji,\n" +
+                        "Sare Devo Me Pehle Puje Ganpati Ji.\n\n" +
+                        "Mund Mala Hatho Parasu Shobhe, Sundar Mukhda Pyara,\n" +
+                        "Charano Me Tere Jhuke Sansara.",
+                lyricsHindi = "शिव गौरा के लाडले गणेश जी,\n" +
+                        "सारे देवों में पहले पूजे गणपति जी।\n\n" +
+                        "मुंड माला हाथों परसू शोभे, सुंदर मुखड़ा प्यारा,\n" +
+                        "चरणों में तेरे झुके संसारा।",
+                lyricsMarathi = "शिव गौरा के लाडले गणेश जी, सारे देवों में सबसे पहले पूजे जाते गणपति जी।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 47. GANESHA: Tum Jo Kripa Karo To Mit Jaye Vipada Sari ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Tum Jo Kripa Karo To Mit Jaye Vipada Sari",
+                titleHindi = "तुम जो कृपा करो तो मिट जाए विपदा सारी",
+                titleMarathi = "तुम जो कृपा करो तो मिट जाए विपदा सारी",
+                lyricsEnglish = "Tum Jo Kripa Karo To Mit Jaye Vipada Sari,\n" +
+                        "Hey Ganpati Deva Sun Lo Pukaar Humari.\n\n" +
+                        "Vighnaharta Tumhi Ho, Dukh Harta Tumhi Ho,\n" +
+                        "Charano Ke Dasi Ko Do Pyar Ganpati.",
+                lyricsHindi = "तुम जो कृपा करो तो मिट जाए विपदा सारी,\n" +
+                        "हे गणपति देवा सुन लो पुकार हमारी।\n\n" +
+                        "विघ्नहर्ता तुम्ही हो, दुःख हर्ता तुम्ही हो,\n" +
+                        "चरणों की दासी को दो प्यार गणपति।",
+                lyricsMarathi = "तुम जो कृपा करो तो मिट जाए विपदा सारी, हे गणपति देवा सुन लो पुकार हमारी।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 48. GANESHA: Sabse Pehle Tumhe Manaun Gaurisut Maharaj ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Sabse Pehle Tumhe Manaun Gaurisut Maharaj",
+                titleHindi = "सबसे पहले तुम्हे मनाऊं गौरीसुत महाराज",
+                titleMarathi = "सबसे पहले तुम्हे मनाऊं गौरीसुत महाराज",
+                lyricsEnglish = "Sabse Pehle Tumhe Manaun Gaurisut Maharaj,\n" +
+                        "Tere Bina Adhura Mera Har Ek Kaaj.\n\n" +
+                        "Riddhi Siddhi Data Ho Tum, Bhakto Ke Rakhwale,\n" +
+                        "Sankat Mochan Ganpati Nirale.",
+                lyricsHindi = "सबसे पहले तुम्हे मनाऊं गौरीसुत महाराज,\n" +
+                        "तेरे बिना अधूरा मेरा हर एक काज।\n\n" +
+                        "रिद्धि सिद्धि दाता हो तुम, भक्तों के रखवाले,\n" +
+                        "संकट मोचन गणपति निराले।",
+                lyricsMarathi = "सबसे पहले तुम्हे मनाऊं गौरीसुत महाराज, तेरे बिना अधूरा मेरा हर एक काज।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 49. GANESHA: Mere Ladle Ganesh Pyare Pyare ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Mere Ladle Ganesh Pyare Pyare",
+                titleHindi = "मेरे लाड़ले गणेश प्यारे प्यारे",
+                titleMarathi = "मेरे लाड़ले गणेश प्यारे प्यारे",
+                lyricsEnglish = "Mere Ladle Ganesh Pyare Pyare,\n" +
+                        "Bholenaath Ke Dulara Sabko Pyare.\n\n" +
+                        "Moos Ki Sawari Teri, Modak Ka Bhog,\n" +
+                        "Charano Me Tere Mite Sare Rog.",
+                lyricsHindi = "मेरे लाड़ले गणेश प्यारे प्यारे,\n" +
+                        "भोलेनाथ के दुलारे सबको प्यारे।\n\n" +
+                        "मूषक की सवारी तेरी, मोदक का भोग,\n" +
+                        "चरणों में तेरे मिटे सारे रोग।",
+                lyricsMarathi = "मेरे लाड़ले गणेश प्यारे प्यारे, भोलेनाथ के दुलारे सबको प्यारे।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
+            ),
+
+            // --- 50. GANESHA: Riddhi Siddhi Ke Data Suno Ganpati ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Riddhi Siddhi Ke Data Suno Ganpati",
+                titleHindi = "रिद्धि सिद्धि के दाता सुनो गणपति",
+                titleMarathi = "रिद्धि सिद्धि के दाता सुनो गणपति",
+                lyricsEnglish = "Riddhi Siddhi Ke Data Suno Ganpati,\n" +
+                        "Aayo Sharan Me Tumhari He Ganpati.\n\n" +
+                        "Gyan Buddhi De Do Swami, Kripa Karo Ab Mohe,\n" +
+                        "Charan Kamal Me Mera Mann Yeh Mohe.",
+                lyricsHindi = "रिद्धि सिद्धि के दाता सुनो गणपति,\n" +
+                        "आयो शरण में तुम्हारी हे गणपति।\n\n" +
+                        "ज्ञान बुद्धि दे डू स्वामी, कृपा करो अब मोहे,\n" +
+                        "चरण कमल में मेरा मन यह मोहे।",
+                lyricsMarathi = "रिद्धि सिद्धि के दाता सुनो गणपति, आयो शरण में तुम्हारी हे गणपति।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 51. GANESHA: Preet Me Pooje Naam Tumhara Ganpati Jagat Khivaiya ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Preet Me Pooje Naam Tumhara Ganpati Jagat Khivaiya",
+                titleHindi = "प्रीत में पूजे नाम तुम्हारा गणपति जगत खिवैया",
+                titleMarathi = "प्रीत में पूजे नाम तुम्हारा गणपति जगत खिवैया",
+                lyricsEnglish = "Preet Me Pooje Naam Tumhara Ganpati Jagat Khivaiya,\n" +
+                        "Sare Jag Ka Palanhara Tuhi Hai Dayala.\n\n" +
+                        "Sankat Mochan Vighnaharta, Namo Namo Ganpati,\n" +
+                        "Bhakto Ke Prannath Ho Tum Ganpati.",
+                lyricsHindi = "प्रीत में पूजे नाम तुम्हारा गणपति जगत खिवैया,\n" +
+                        "सारे जग का पालनहारा तुही है दयाला।\n\n" +
+                        "संकट मोचन विघ्नहर्ता, नमो नमो गणपति,\n" +
+                        "भक्तों के प्राणनाथ हो तुम गणपति।",
+                lyricsMarathi = "प्रीत में पूजे नाम तुम्हारा गणपति जगत खिवैया, सारे जग का पालनहारा तुही है दयाला।",
+                audioUrl = "",
+                isFavorite = false,
+                category = "Bhajan"
+            ),
+
+            // --- 52. GANESHA: Mere Hridaye Karo Parvesh Ji ---
+            AartiEntity(
+                deity = "Ganesha",
+                titleEnglish = "Mere Hridaye Karo Parvesh Ji Ganeshadhipati",
+                titleHindi = "मेरे हृदये करो परवेश जी गणेषाधिपती",
+                titleMarathi = "मेरे हृदये करो परवेश जी",
+                lyricsEnglish = "Mere Hridaye Karo Parvesh Ji Ganeshadhipati,\n" +
+                        "Aake Biso Antar Me He Gajanan Swami.\n\n" +
+                        "Aandhi Tufan Me Naiya Par Lagao Ganpati,\n" +
+                        "Charano Me Tere Koti Koti Pranam Ganpati.",
+                lyricsHindi = "मेरे हृदये करो परवेश जी गणेषाधिपती,\n" +
+                        "आके बसों अंतर में हे गजानन स्वामी।\n\n" +
+                        "आंधी तूफान में नैया पार लगाओ गणपति,\n" +
+                        "चरणों में तेरे कोटि कोटि प्रणाम गणपति।",
+                lyricsMarathi = "मेरे हृदये करो परवेश जी गणेषाधिपती, आके बसों अंतर में हे गजानन स्वामी।",
+                audioUrl = "",
+                isFavorite = true,
+                category = "Bhajan"
             )
         )
     }
